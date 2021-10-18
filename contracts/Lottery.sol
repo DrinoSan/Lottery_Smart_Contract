@@ -7,9 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
 
 contract Lottery is VRFConsumerBase, Ownable {
-    address[] public players;
+    address payable[] public players;
     uint256 public usdEntryFee;
-    address public recentWinner;
+    address payable public recentWinner;
     uint256 public randomness;
     AggregatorV3Interface internal ethPriceFeed;
 
