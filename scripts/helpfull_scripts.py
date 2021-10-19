@@ -1,4 +1,4 @@
-from brownie import network, config, accounts, Contract
+from brownie import network, config, accounts, Contract, MockV3Aggregator
 
 from scripts.deploy_lottery import deploy_lottery
 
@@ -60,6 +60,4 @@ INITIAL_VALUE = 200000000000
 
 def deploy_mocks(decimals=DECIMALS, initial_value=INITIAL_VALUE):
     account = get_account()
-    mock_price_feed = MockV3Aggregator.deploy(
-        decimals, initial_value, {"from": account}
-    )
+    MockV3Aggregator.deploy(decimals, initial_value, {"from": account})
