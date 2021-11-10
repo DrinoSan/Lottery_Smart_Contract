@@ -24,7 +24,7 @@ contract Lottery is VRFConsumerBase, Ownable {
 
     LOTTERY_STATE public lottery_state;
 
-    event RequestRandomness(bytes32 requestId);
+    event RequestedRandomness(bytes32 requestId);
 
     constructor(
         address _priceFeedAddress,
@@ -61,21 +61,20 @@ contract Lottery is VRFConsumerBase, Ownable {
         lottery_state = LOTTERY_STATE.OPEN;
     }
 
-    function end_lottery() public onlyOwner {
-        // Pseude random number -> do not put in production friendly reminder :D
+    function endLottery() public onlyOwner {
         // uint256(
-        //     keccak256(
+        //     keccack256(
         //         abi.encodePacked(
-        //             nonce, // is predicatble ( number of transactions )
-        //             msg.sender, // is predicatble
-        //             block.difficulty, // can be manipulated by the miners
-        //             block.timestamp // is predicatble
+        //             nonce, // nonce is preditable (aka, transaction number)
+        //             msg.sender, // msg.sender is predictable
+        //             block.difficulty, // can actually be manipulated by the miners!
+        //             block.timestamp // timestamp is predictable
         //         )
         //     )
         // ) % players.length;
         lottery_state = LOTTERY_STATE.CALCULATING_WINNER;
         bytes32 requestId = requestRandomness(keyhash, fee);
-        emit RequestRandomness(requestId);
+        emit RequestedRandomness(requestId);
     }
 
     function fulfillRandomness(bytes32 _requestId, uint256 _randomness)
@@ -84,9 +83,9 @@ contract Lottery is VRFConsumerBase, Ownable {
     {
         require(
             lottery_state == LOTTERY_STATE.CALCULATING_WINNER,
-            "You are not there yet!"
+            "You aren't there yet!"
         );
-        require(_randomness > 0, "No random number");
+        require(_randomness > 0, "random-not-found");
         uint256 indexOfWinner = _randomness % players.length;
         recentWinner = players[indexOfWinner];
         recentWinner.transfer(address(this).balance);

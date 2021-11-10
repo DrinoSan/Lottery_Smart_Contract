@@ -62,11 +62,11 @@ def test_can_end_lottery():
     lottery.start_lottery({"from": account})
     lottery.enter({"from": account, "value": lottery.getEntrance()})
     fund_with_link(lottery)
-    lottery.end_lottery({"from": account})
+    lottery.endLottery({"from": account})
     assert lottery.lottery_state() == 2
 
 
-def test_can_pick_winner():
+def test_can_pick_winner2():
     # Arrange
     if network.show_active() not in LOCALE_BLOCKCHAIN_ENVIRONTMENTS:
         pytest.skip()
@@ -77,8 +77,8 @@ def test_can_pick_winner():
     lottery.enter({"from": get_account(index=1), "value": lottery.getEntrance()})
     lottery.enter({"from": get_account(index=2), "value": lottery.getEntrance()})
     fund_with_link(lottery)
-    transaction = lottery.end_lottery({"from": account})
-    requestId = transaction.events["RequestRandomness"]["requestId"]
+    transaction = lottery.endLottery({"from": account})
+    requestId = transaction.events["RequestedRandomness"]["requestId"]
     STATIC_RNG = 777
     get_contract("vrf_coordinator").callBackWithRandomness(
         requestId, STATIC_RNG, lottery.address, {"from": account}

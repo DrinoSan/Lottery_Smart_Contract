@@ -32,7 +32,7 @@ def start_lottery():
 def enter_lottery():
     account = get_account()
     lottery = Lottery[-1]
-    value = lottery.getEntrance() + 1000000
+    value = lottery.getEntrance() + 100000000
     tx = lottery.enter({"from": account, "value": value})
     tx.wait(1)
     print("You entered the lottery")
@@ -43,7 +43,7 @@ def end_lottery():
     lottery = Lottery[-1]
     tx = fund_with_link(lottery.address)
     tx.wait(1)
-    ending_transaction = lottery.end_lottery({"from": account})
+    ending_transaction = lottery.endLottery({"from": account})
     ending_transaction.wait(1)
     time.sleep(60)
     print(f"{lottery.recentWinner()} won the lottery")

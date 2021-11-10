@@ -19,6 +19,6 @@ def test_can_pick_winner():
     lottery.enter({"from": account, "value": lottery.getEntrance()})
     fund_with_link(lottery)
     lottery.end_lottery({"from": account})
-    time.sleep(120)
+    time.sleep(60)
     assert lottery.recentWinner() == account
     assert lottery.balance() == 0
